@@ -4,7 +4,7 @@ class List {
   constructor(list) {
     this.#list = list
   }
-  static get empty () {
+  static get empty() {
     return new List([])
   }
   static fromList(xs) {
@@ -13,7 +13,7 @@ class List {
     return new List(xs.slice(0))
   }
   static repeat(x) {
-    const repeatGen = function*() {
+    const repeatGen = function* () {
       while (true) {
         yield x
       }
@@ -21,7 +21,7 @@ class List {
     return new List(repeatGen())
   }
   static iterate(fn, x) {
-    const generator = function*() {
+    const generator = function* () {
       while (true) {
         yield x
         x = fn(x)
@@ -30,7 +30,7 @@ class List {
     return new List(generator())
   }
   static cycle(xs) {
-    const generator = function*() {
+    const generator = function* () {
       let i = 0
       xs = xs.toList()
       while (true) {
@@ -91,7 +91,7 @@ class List {
     return this.#list.length
   }
   nil() {
-    return (this.#list.length === 0)
+    return this.#list.length === 0
   }
   cons(element) {
     console.log('cons\t', '#list: ', this.#list, 'element: ', element)
@@ -102,7 +102,15 @@ class List {
     return new List([...this.#list, ...list.toList()])
   }
   slice(startIndex = 0, endIndex = this.#list.length) {
-    console.log('slice\t', '#list: ', this.#list, 'start: ', startIndex, 'end: ', endIndex)
+    console.log(
+      'slice\t',
+      '#list: ',
+      this.#list,
+      'start: ',
+      startIndex,
+      'end: ',
+      endIndex
+    )
     return new List(this.#list.slice(startIndex, endIndex))
   }
   map(fn) {
@@ -134,7 +142,10 @@ class List {
   }
   concatMap(fn) {
     console.log('concatMap\t', '#list: ', this.#list)
-    return this.#list.reduce((prev, cur) => new List([...prev.toList(), ...cur.map(fn).toList()]), List.empty)
+    return this.#list.reduce(
+      (prev, cur) => new List([...prev.toList(), ...cur.map(fn).toList()]),
+      List.empty
+    )
   }
   zipWith(fn, xs) {
     console.log('zipWith\t', '#list: ', this.#list, 'xs: ', xs)
@@ -142,7 +153,7 @@ class List {
     const xsArray = xs.toList()
     this.#list.forEach((element, index) => {
       result = result.concat(fn(element, xsArray[index]))
-    });
+    })
     return new List(result)
   }
   foldr(fn, x) {
@@ -227,7 +238,12 @@ class List {
     return this.#list[0]
   }
 }
-console.log(List.repeat(1).take(10).foldr(x => x + 1,0).toList())
+console.log(
+  List.repeat(1)
+    .take(10)
+    .foldr((x) => x + 1, 0)
+    .toList()
+)
 // console.log(List.fromList([List.fromList([1,1]), List.repeat(2)]).concat().take(3).toList())
 // console.log(List.fromList([1, 2, 3, 4]).drop(-1).toList())
 // console.log(List.fromList([1,2,3]).findIndex( x => ! (x&1) ))

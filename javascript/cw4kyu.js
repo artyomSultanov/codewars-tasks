@@ -11,73 +11,116 @@ function snail(matrix) {
     result.push(...matrix.shift())
     result.push(...matrix.reduce((acc, arr) => acc.concat(arr.pop()), []))
     result.push(...matrix.pop().reverse())
-    result.push(...matrix.reduce((acc, arr) => acc.concat(arr.shift()), []).reverse())
+    result.push(
+      ...matrix.reduce((acc, arr) => acc.concat(arr.shift()), []).reverse()
+    )
   }
 
   return result
 }
 
-// console.log(snail([[1, 2, 3], 
+// console.log(snail([[1, 2, 3],
 //                   [4, 5, 6],
 //                   [7, 8, 9]]))
 // console.log(snail([[1, 2], [3, 4]]));
 // console.log(snail([[]]))
-// console.log(snail([[1, 2, 3, 4, 5, 6], 
-//                    [20, 21, 22, 23, 24, 7], 
+// console.log(snail([[1, 2, 3, 4, 5, 6],
+//                    [20, 21, 22, 23, 24, 7],
 //                    [19, 32, 33, 34, 25, 8],
-//                    [18, 31, 36, 35, 26, 9], 
-//                    [17, 30, 29, 28, 27, 10], 
+//                    [18, 31, 36, 35, 26, 9],
+//                    [17, 30, 29, 28, 27, 10],
 //                    [16, 15, 14, 13, 12, 11]]))
 
 // https://www.codewars.com/kata/525c7c5ab6aecef16e0001a5
 function parseInt(string) {
-  const firstNums = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-  const decimals = [,, 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
-  const grading = new Map([['hundred', 2], ['thousand', 3], ['million', 6], ['billion', 9]])
+  const firstNums = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
+  ]
+  const decimals = [
+    ,
+    ,
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
+  ]
+  const grading = new Map([
+    ['hundred', 2],
+    ['thousand', 3],
+    ['million', 6],
+    ['billion', 9],
+  ])
 
   const str2num = (str) => {
-    if (firstNums.includes(str))
-      return firstNums.indexOf(str)
-    if (decimals.includes(str))
-      return decimals.indexOf(str) * 10
+    if (firstNums.includes(str)) return firstNums.indexOf(str)
+    if (decimals.includes(str)) return decimals.indexOf(str) * 10
     if (str.includes('-'))
-      return decimals.indexOf(str.split('-')[0]) * 10 + firstNums.indexOf(str.split('-')[1])
+      return (
+        decimals.indexOf(str.split('-')[0]) * 10 +
+        firstNums.indexOf(str.split('-')[1])
+      )
     return 0
   }
   let result = 0
-  string
-    .split(' ')
-    .forEach((word, index, words) => {
-      if (grading.has(word)) {
-        const curGrading = grading.get(word) 
-        
-        let prevGrading
-        let prevNum
-        if (index > 1) {
-          grading.has(words[index-1]) ? prevGrading = grading.get(words[index-1]) + 1 : prevNum = str2num(words[index-1])
-          grading.has(words[index-2]) ? prevGrading = grading.get(words[index-2]) + 1 : prevNum = str2num(words[index-2])
-        }
-        
-        result = prevGrading > curGrading
-          ? result - prevNum + prevNum * (10 ** curGrading) 
-          : result * (10 ** curGrading)
-      } 
-      decimals.includes(word)
-        ? result = result * 100 + str2num(word)
-        : result += str2num(word)
-    })
+  string.split(' ').forEach((word, index, words) => {
+    if (grading.has(word)) {
+      const curGrading = grading.get(word)
+
+      let prevGrading
+      let prevNum
+      if (index > 1) {
+        grading.has(words[index - 1])
+          ? (prevGrading = grading.get(words[index - 1]) + 1)
+          : (prevNum = str2num(words[index - 1]))
+        grading.has(words[index - 2])
+          ? (prevGrading = grading.get(words[index - 2]) + 1)
+          : (prevNum = str2num(words[index - 2]))
+      }
+
+      result =
+        prevGrading > curGrading
+          ? result - prevNum + prevNum * 10 ** curGrading
+          : result * 10 ** curGrading
+    }
+    decimals.includes(word)
+      ? (result = result * 100 + str2num(word))
+      : (result += str2num(word))
+  })
   return result
 }
 // console.log(parseInt('nine hundred twenty-two thousand four hundred thirteen'))
 
 // https://www.codewars.com/kata/5324945e2ece5e1f32000370
 function sumStrings(a, b) {
-  [a, b] = [a.split(''), b.split('')]
+  ;[a, b] = [a.split(''), b.split('')]
   let result = ''
   let temp = 0
-  while(a.length || b.length || temp) {
+  while (a.length || b.length || temp) {
     temp += (+a.pop() || 0) + (+b.pop() || 0)
-    result = temp % 10 + result
+    result = (temp % 10) + result
     temp = temp >= 10
   }
   return result.replace(/^0+/, '')
@@ -87,22 +130,32 @@ function sumStrings(a, b) {
 // console.log(sumStrings1('123', '1'))
 
 // https://www.codewars.com/kata/52742f58faf5485cae000b9a
-function formatDuration (secondsLeft) {
-  if (secondsLeft === 0) return 'now' 
-  const 
-    minuteLimit = 60, 
-    hourLimit = 3600, 
-    dayLimit = 86400, 
+function formatDuration(secondsLeft) {
+  if (secondsLeft === 0) return 'now'
+  const minuteLimit = 60,
+    hourLimit = 3600,
+    dayLimit = 86400,
     yearLimit = 31536000,
     year = Math.floor(secondsLeft / yearLimit) || '',
-    day = Math.floor(secondsLeft % yearLimit / dayLimit) || '',
-    hour = Math.floor(secondsLeft % yearLimit % dayLimit / hourLimit) || '',
-    minute = Math.floor(secondsLeft % yearLimit % dayLimit % hourLimit / minuteLimit) || '',
+    day = Math.floor((secondsLeft % yearLimit) / dayLimit) || '',
+    hour = Math.floor(((secondsLeft % yearLimit) % dayLimit) / hourLimit) || '',
+    minute =
+      Math.floor(
+        (((secondsLeft % yearLimit) % dayLimit) % hourLimit) / minuteLimit
+      ) || '',
     second = secondsLeft % minuteLimit || ''
 
   const times = { year, day, hour, minute, second }
-  const res = Object.keys(times).reduce((acc, key) => times[key] ? acc.concat(`${times[key]} ${key}${times[key] === 1 ? '' : 's'}`) : acc, [])
-  return res.length > 1 ? res.slice(0, -1).join(', ') + ' and ' + res.slice(-1) : res.join(', ')
+  const res = Object.keys(times).reduce(
+    (acc, key) =>
+      times[key]
+        ? acc.concat(`${times[key]} ${key}${times[key] === 1 ? '' : 's'}`)
+        : acc,
+    []
+  )
+  return res.length > 1
+    ? res.slice(0, -1).join(', ') + ' and ' + res.slice(-1)
+    : res.join(', ')
 }
 // console.log(formatDuration(1))
 // console.log(formatDuration(62))
@@ -117,8 +170,18 @@ const takeCoveredIntervals = (interval, covered) => {
   if (interval[0] > covered[1] || interval[1] < covered[0]) res = false
   if (interval[0] <= covered[0] && interval[1] >= covered[1]) res = interval
   if (interval[0] >= covered[0] && interval[1] <= covered[1]) res = covered
-  if (interval[0] <= covered[0] && interval[1] <= covered[1] && interval[1] >= covered[0]) res = [interval[0], covered[1]]
-  if (interval[0] >= covered[0] && interval[1] >= covered[1] && interval[0] <= covered[1]) res = [covered[0], interval[1]]
+  if (
+    interval[0] <= covered[0] &&
+    interval[1] <= covered[1] &&
+    interval[1] >= covered[0]
+  )
+    res = [interval[0], covered[1]]
+  if (
+    interval[0] >= covered[0] &&
+    interval[1] >= covered[1] &&
+    interval[0] <= covered[1]
+  )
+    res = [covered[0], interval[1]]
   return res
 }
 function sumIntervals(intervals) {
@@ -152,13 +215,15 @@ function sumIntervals(intervals) {
 
 // https://www.codewars.com/kata/52a382ee44408cea2500074c
 function determinant(m) {
-  const det3x3Mat = mat => {
-    return mat[0][0] * mat[1][1] * mat[2][2] +
-           mat[0][1] * mat[1][2] * mat[2][0] +
-           mat[1][0] * mat[2][1] * mat[0][2] -
-           mat[0][2] * mat[1][1] * mat[2][0] -
-           mat[0][1] * mat[1][0] * mat[2][2] -
-           mat[0][0] * mat[1][2] * mat[2][1]
+  const det3x3Mat = (mat) => {
+    return (
+      mat[0][0] * mat[1][1] * mat[2][2] +
+      mat[0][1] * mat[1][2] * mat[2][0] +
+      mat[1][0] * mat[2][1] * mat[0][2] -
+      mat[0][2] * mat[1][1] * mat[2][0] -
+      mat[0][1] * mat[1][0] * mat[2][2] -
+      mat[0][0] * mat[1][2] * mat[2][1]
+    )
   }
   const getMinor = (mat, x, y) => {
     let minor = []
@@ -173,13 +238,13 @@ function determinant(m) {
     }
     return minor
   }
-  const calcDet = mat => {
+  const calcDet = (mat) => {
     let res = 0
     if (mat.length === 1) return mat[0][0]
     if (mat.length === 2) return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
     if (mat.length === 3) return det3x3Mat(mat)
     for (let i = 0; i < mat.length; i++) {
-      res += mat[0][i] * (-1)**(i) * calcDet(getMinor(mat, 0, i))
+      res += mat[0][i] * (-1) ** i * calcDet(getMinor(mat, 0, i))
     }
     return res
   }
@@ -194,18 +259,18 @@ class myBigInt {
   }
   plus() {
     let sumOneLengthStrings = (a, b) => {
-      let res =''
+      let res = ''
       let keepInMind = 0
       for (let i = a.length - 1; i > -1; i--) {
-        if ((+a[i] + +b[i] + keepInMind) >= 10) {
+        if (+a[i] + +b[i] + keepInMind >= 10) {
           res = ((+a[i] + +b[i] + keepInMind) % 10) + res
           keepInMind = 1
         } else {
-          res = (+a[i] + +b[i] + keepInMind) + res
+          res = +a[i] + +b[i] + keepInMind + res
           keepInMind = 0
         }
       }
-      return (keepInMind === 0) ? res : keepInMind + res
+      return keepInMind === 0 ? res : keepInMind + res
     }
     a = this.x
     b = this.y
@@ -218,16 +283,32 @@ class myBigInt {
     sumOneLength = ''
     if (a.length > b.length) {
       head = a.slice(0, a.length - b.length)
-      sumOneLength = sumOneLengthStrings(a.slice(a.length - b.length, a.length), b)
+      sumOneLength = sumOneLengthStrings(
+        a.slice(a.length - b.length, a.length),
+        b
+      )
     } else {
       head = b.slice(0, b.length - a.length)
-      sumOneLength = sumOneLengthStrings(a, b.slice(b.length - a.length, b.length))
+      sumOneLength = sumOneLengthStrings(
+        a,
+        b.slice(b.length - a.length, b.length)
+      )
     }
     if (head.length >= 2) {
-      return head.slice(0, -2) + sumOneLengthStrings(head.slice(-2, head.length), '0' + sumOneLength[0]) + sumOneLength.slice(1, sumOneLength.length)
+      return (
+        head.slice(0, -2) +
+        sumOneLengthStrings(
+          head.slice(-2, head.length),
+          '0' + sumOneLength[0]
+        ) +
+        sumOneLength.slice(1, sumOneLength.length)
+      )
     } else {
       if ((head + sumOneLength).length > Math.max(a.length, b.length)) {
-        return sumOneLengthStrings(head, sumOneLength[0]) + sumOneLength.slice(1, sumOneLength.length)  
+        return (
+          sumOneLengthStrings(head, sumOneLength[0]) +
+          sumOneLength.slice(1, sumOneLength.length)
+        )
       } else {
         return head + sumOneLength
       }
@@ -238,14 +319,14 @@ class myBigInt {
     let b = this.y.split('')
   }
 }
-function factorial(n){
+function factorial(n) {
   let prodTree = (l, r) => {
     if (l > r) return 1n
     if (l === r) return BigInt(r)
     if (r - l === 1) return BigInt(r * l)
-    let m = ((l + r) - (l + r) % 2) / 2
+    let m = (l + r - ((l + r) % 2)) / 2
     return prodTree(l, m) * prodTree(m + 1, r)
-  };
+  }
   if (n < 0) return 0n
   if (n === 0) return 1n
   if (n === 1 || n === 2) return BigInt(n)
@@ -255,16 +336,18 @@ function factorial(n){
 // console.log(factorial(10))
 
 // https://www.codewars.com/kata/55983863da40caa2c900004e
-function nextBigger(n){
+function nextBigger(n) {
   if (n < 10) return -1
   if (n < 100) {
-    return (n % 10 > (n - n % 10) / 10) ? (n % 10) * 10 + ((n - n % 10) / 10) : -1
+    return n % 10 > (n - (n % 10)) / 10
+      ? (n % 10) * 10 + (n - (n % 10)) / 10
+      : -1
   }
   let lstNum = String(n).split('')
   let indNumToChange = null
   for (let i = lstNum.length - 1; i > 0; i--) {
     if (lstNum[i - 1] < lstNum[i]) {
-      indNumToChange = i - 1 
+      indNumToChange = i - 1
       break
     }
   }
@@ -274,9 +357,19 @@ function nextBigger(n){
   }
   let minNumInd = indsNumBigger[0]
   for (let i = 1; i < indsNumBigger.length; i++) {
-    if (lstNum[minNumInd] > lstNum[indsNumBigger[i]]) minNumInd = indsNumBigger[i] 
+    if (lstNum[minNumInd] > lstNum[indsNumBigger[i]])
+      minNumInd = indsNumBigger[i]
   }
-  return Number(lstNum.slice(0, indNumToChange).join('') + lstNum[minNumInd] + lstNum.filter((_, ind) => ind !== minNumInd && ind >= indNumToChange).sort().join('')) || -1
+  return (
+    Number(
+      lstNum.slice(0, indNumToChange).join('') +
+        lstNum[minNumInd] +
+        lstNum
+          .filter((_, ind) => ind !== minNumInd && ind >= indNumToChange)
+          .sort()
+          .join('')
+    ) || -1
+  )
 }
 // console.log(nextBigger(999855331))
 
@@ -296,8 +389,10 @@ function getRightMoves(x, y, field) {
 }
 function findMovesOfHorse(start) {
   const field = makeChessField()
-  const [x, y] = [field.findIndex(el => el.includes(start)), 
-                field.filter(el => el.includes(start))[0].findIndex(el => el === start)]
+  const [x, y] = [
+    field.findIndex((el) => el.includes(start)),
+    field.filter((el) => el.includes(start))[0].findIndex((el) => el === start),
+  ]
   return getRightMoves(x, y, field)
 }
 function makeChessField() {
@@ -317,12 +412,12 @@ function traverseBFS(queue, passed, finish) {
   if (passed.includes(pos)) return traverseBFS(queue, passed, finish)
   wave++
   passed.push(pos)
-  const nextMoves = findMovesOfHorse(pos).map(el => [el, wave])
+  const nextMoves = findMovesOfHorse(pos).map((el) => [el, wave])
   return traverseBFS([...queue, ...nextMoves], passed, finish)
 }
 function knight(start, finish) {
   // Ha-ha, it's not "knight", it's a horse :D
-  const nextMoves = findMovesOfHorse(start).map(el => [el, 1])
+  const nextMoves = findMovesOfHorse(start).map((el) => [el, 1])
   return traverseBFS(nextMoves, [], finish)
 }
 // console.log(knight('a3', 'g2'))
@@ -336,29 +431,33 @@ class RomanNumerals {
     ['L', 50],
     ['C', 100],
     ['D', 500],
-    ['M', 1000]
-  ]);
+    ['M', 1000],
+  ])
   static toRoman(notRomanNumber) {
     let romanNum = ''
-    const getInRoman = num => {
+    const getInRoman = (num) => {
       if (num === 0) return ''
       if (num < 4) return 'I'.repeat(num)
       let lastKey = 'I'
-      
+
       for (const [key, value] of this.dict) {
         if (value === num) return key
         if (value > num) {
           for (const [k, v] of this.dict) {
-            if (value - this.dict.get(lastKey) - v <= num - this.dict.get(lastKey) && value - this.dict.get(lastKey) - v > 0) {
+            if (
+              value - this.dict.get(lastKey) - v <=
+                num - this.dict.get(lastKey) &&
+              value - this.dict.get(lastKey) - v > 0
+            ) {
               return getInRoman(value - num) + key
             }
           }
-          return lastKey + getInRoman(num - this.dict.get(lastKey))  
+          return lastKey + getInRoman(num - this.dict.get(lastKey))
         }
         lastKey = key
       }
       return lastKey.repeat(+String(num)[0])
-    };
+    }
     let strNum = String(notRomanNumber)
     for (let i = 0; i < strNum.length; i++) {
       romanNum += getInRoman(strNum[i] + '0'.repeat(strNum.length - i - 1))
@@ -366,7 +465,7 @@ class RomanNumerals {
     return romanNum
   }
   static fromRoman(str) {
-    const getNumber = arr => {
+    const getNumber = (arr) => {
       if (arr.length === 0) return 0
       if (arr.length === 1) return this.dict.get(arr[0])
       let result = 0
@@ -384,13 +483,13 @@ class RomanNumerals {
         last = arr.pop()
         for (const [key, value] of this.dict) {
           if (key === last) {
-            result = (flag ? result + value : result - value)
+            result = flag ? result + value : result - value
             flag = this.dict.get(last) <= this.dict.get(arr[arr.length - 1])
           }
         }
       }
       return result
-    };
+    }
     return getNumber(str.split(''))
   }
 }
@@ -400,3 +499,98 @@ class RomanNumerals {
 // console.log(RomanNumerals.toRoman(962)) // CMLXII
 // console.log(RomanNumerals.toRoman(1990)) // MCMXC
 // console.log(RomanNumerals.toRoman(841)) // DCCCXLI
+
+// https://www.codewars.com/kata/5765870e190b1472ec0022a2/train/javascript
+function pathFinder(maze) {
+  const processed = new Set()
+  const queue = [0]
+  processed.add(0)
+  const mazeLength = maze.length
+  let rowLength = 1
+  for (let i = 0; i < maze.length && maze[i] !== '\n'; i++) {
+    rowLength++
+  }
+  while (queue.length > 0) {
+    const pivot = queue.shift()
+    const directions = getDirections(pivot, rowLength, mazeLength).filter(
+      (direction) => !processed.has(direction)
+    )
+    for (const direction of directions) {
+      if (direction === mazeLength - 1) return true
+      if (maze[direction] !== 'W' && maze[direction] !== '\n') {
+        queue.push(direction)
+      }
+      processed.add(direction)
+    }
+  }
+  return false
+}
+
+function getDirections(pivot, rowLength, mazeLength) {
+  const directions = []
+  if (pivot >= rowLength) directions.push(pivot - rowLength)
+  if ((pivot + 1) % rowLength !== 0) directions.push(pivot + 1)
+  if (pivot < mazeLength - rowLength) directions.push(pivot + rowLength)
+  if (pivot % rowLength !== 0) directions.push(pivot - 1)
+  return directions
+}
+
+// console.log(
+//   true,
+//   pathFinder(
+//     `.W.
+// .W.
+// ...`
+//   )
+// )
+// console.log(
+//   true,
+//   pathFinder(
+//     `.W.
+// .W.
+// ...`
+//   )
+// )
+// console.log(
+//   false,
+//   pathFinder(
+//     `.W.
+// .W.
+// W..`
+//   )
+// )
+// console.log(
+//   true,
+//   pathFinder(
+//     `......
+// ......
+// ......
+// ......
+// ......
+// ......`
+//   )
+// )
+// console.log(
+//   false,
+//   pathFinder(
+//     `......
+// ......
+// ......
+// ......
+// .....W
+// ....W.`
+//   )
+// )
+// console.log(
+//   false,
+//   pathFinder(`..W.......
+// ..W..W..WW
+// .........W
+// WWW...W..W
+// W..W.W.W..
+// ...WW...WW
+// .....W....
+// ...W.W....
+// .WW...WW..
+// ..WW..W...`)
+// )

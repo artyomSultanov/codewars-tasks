@@ -4,7 +4,7 @@ function digitize(n) {
   const arr = []
   while (n) {
     arr.push(n % 10)
-    n = (n - n % 10) / 10
+    n = (n - (n % 10)) / 10
   }
   return arr
 }
